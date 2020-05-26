@@ -6,3 +6,9 @@ Running go-mouse-toggle moves the mouse 10 pixels forward/backward thus simulati
 The app can be run infinitely or a certain amount of minutes.
 
 ![fyne ui](https://raw.githubusercontent.com/etimoz/go-mouse-toggle/master/images/go-mouse-toggle.png)
+
+### Download
+
+* [Linux](https://github.com/etimoz/go-mouse-toggle/releases/download/v1.0.1/go-mouse-toggle_1_0_1_linux_amd64.zip)
+* [Mac](https://github.com/etimoz/go-mouse-toggle/releases/download/v1.0.1/go-mouse-toggle_1_0_1_darwin_x86_64.zip)
+* [Windows](https://github.com/etimoz/go-mouse-toggle/releases/download/v1.0.1/go-mouse-toggle_1_0_1_windows_i386.zip)
