@@ -10,6 +10,10 @@ import (
 	"time"
 )
 
+/*
+ compiling troubles: https://stackoverflow.com/questions/21322707/zlib-header-not-found-when-cross-compiling-with-mingw
+ */
+
 func main() {
 	app := app.New()
 	duration := 0
