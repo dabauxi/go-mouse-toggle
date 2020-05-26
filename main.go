@@ -16,7 +16,7 @@ func main() {
 	w := app.NewWindow("Go mouse toggle")
 	isRunning := false
 	input := widget.NewEntry()
-	input.SetPlaceHolder("infiniteProgressBar")
+	input.SetPlaceHolder("infinite")
 	errorLabel := widget.NewLabel("Wrong input, provide minutes.")
 	errorLabel.Hide()
 	progressBar := widget.NewLabel("Running 0/x minutes.")
