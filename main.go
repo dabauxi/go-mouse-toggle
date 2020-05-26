@@ -52,6 +52,7 @@ func main() {
 				errorLabel.Hide()
 				duration = i
 				isRunning = true
+				// start progress bar
 				go func() {
 					if duration == 0 {
 						infiniteProgressBar.Show()
@@ -70,7 +71,35 @@ func main() {
 						}
 					}
 				}()
-				go runApp(duration, quitChannel)
+				// start toggle
+				go func() {
+					stepSize := 10
+					_, maxY := robotgo.GetScreenSize()
+					if duration == 0 {
+						for {
+							select {
+							case <- quitChannel:
+								return
+							default:
+								toggle(maxY, stepSize)
+							}
+						}
+					} else {
+						seconds := duration * 60
+						for i := 0; i < seconds; i = i+2 {
+							select {
+							case <-quitChannel:
+								progressBar.Hide()
+								isRunning = false
+								return
+							default:
+								toggle(maxY, stepSize)
+							}
+						}
+						progressBar.Hide()
+						isRunning = false
+					}
+				}()
 			}
 		}),
 		widget.NewButton("Stop", func() {
@@ -91,31 +120,6 @@ func main() {
 		}),
 	))
 	w.ShowAndRun()
-}
-
-func runApp(duration int, quit chan bool) {
-	stepSize := 10
-	_, maxY := robotgo.GetScreenSize()
-	if duration == 0 {
-		for {
-			select {
-			case <- quit:
-				return
-			default:
-				toggle(maxY, stepSize)
-			}
-		}
-	} else {
-		seconds := duration * 60
-		for i := 0; i < seconds; i = i+2 {
-			select {
-			case <-quit:
-				return
-			default:
-				toggle(maxY, stepSize)
-			}
-		}
-	}
 }
 
 func toggle(maxY, stepSize int) {
