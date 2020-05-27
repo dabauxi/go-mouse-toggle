@@ -6,6 +6,7 @@ import (
 	"fyne.io/fyne/widget"
 	"github.com/go-vgo/robotgo"
 	_ "github.com/go-vgo/robotgo"
+	"math"
 	"strconv"
 	"time"
 )
@@ -23,7 +24,7 @@ func main() {
 	input.SetPlaceHolder("infinite")
 	errorLabel := widget.NewLabel("Wrong input, provide minutes.")
 	errorLabel.Hide()
-	progressBar := widget.NewLabel("Running 0/x minutes.")
+	progressBar := widget.NewLabel("")
 	infiniteProgressBar := widget.NewProgressBarInfinite()
 	progressBar.Hide()
 	infiniteProgressBar.Hide()
@@ -31,16 +32,16 @@ func main() {
 	w.SetContent(widget.NewVBox(
 		progressBar,
 		infiniteProgressBar,
-		widget.NewLabel("Enter minutes:"),
+		widget.NewLabel("Enter hours:"),
 		errorLabel,
 		input,
 		widget.NewButton("Start", func() {
 			quitChannel = make(chan bool)
 			inputDuration := input.Text
-			i := 0
+			i := 0.0
 			var err error = nil
 			if inputDuration != "" {
-				i, err = strconv.Atoi(input.Text)
+				i, err = strconv.ParseFloat(input.Text, 64)
 			}
 			if err != nil {
 				errorLabel.Show()
@@ -50,7 +51,7 @@ func main() {
 					return
 				}
 				errorLabel.Hide()
-				duration = i
+				duration = int(math.Round(i * 60))
 				isRunning = true
 				// start progress bar
 				go func() {
@@ -64,7 +65,10 @@ func main() {
 								case <- quitChannel:
 									break
 								default:
-									labelText := fmt.Sprintf("%d minutes left running.", i + 1)
+									leftRunning := duration - i
+									leftHours := leftRunning / 60
+									leftMinutes := duration - i - 60 * leftHours
+									labelText := fmt.Sprintf("%d:%02d h left running.", leftHours, leftMinutes)
 									progressBar.SetText(labelText)
 									time.Sleep(time.Second * 60)
 								}
